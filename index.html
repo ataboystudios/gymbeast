@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#003F91">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Celadon">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>Celadon Fitness</title>
+  <style>
+    :root{
+      --navy:#003F91;
+      --mint:#B9FFC2;
+      --sky:#A9DEF9;
+      --sage:#A0CBA6;
+      --ink:#0B2341;
+      --paper:#F7F8F4;
+      --white:#FFFFFF;
+      --line:rgba(0,63,145,.14);
+      --muted:#61738B;
+      --shadow:0 12px 32px rgba(0,63,145,.10);
+    }
+    *{box-sizing:border-box}
+    html{background:var(--navy)}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+      background:var(--paper);
+      color:var(--ink);
+      min-height:100vh;
+    }
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .shell{max-width:760px;margin:0 auto;padding:0 14px 92px}
+    .hero{
+      margin:0 -14px 16px;
+      padding:calc(18px + env(safe-area-inset-top)) 20px 24px;
+      background:var(--navy);
+      color:var(--mint);
+      border-radius:0 0 28px 28px;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .brand{
+      font-size:32px;
+      letter-spacing:-1.8px;
+      font-weight:900;
+      line-height:.95;
+      text-transform:uppercase;
+    }
+    .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+    .hero p{margin:7px 0 0;color:var(--sky);font-size:14px}
+    .pill{
+      background:var(--mint);
+      color:var(--navy);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .panel{
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      margin-top:13px;
+    }
+    .panel.flat{box-shadow:none}
+    .section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+    h2{font-size:19px;margin:0;letter-spacing:-.3px}
+    .small{font-size:13px;color:var(--muted)}
+    select,input{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      border-radius:13px;
+      padding:11px 12px;
+    }
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    .progress-track{
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(169,222,249,.45);
+      margin-top:12px;
+    }
+    .progress-bar{height:100%;width:0;background:var(--navy);transition:.25s}
+    .exercise-card{
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      margin-top:14px;
+      box-shadow:var(--shadow);
+    }
+    .media{
+      position:relative;
+      padding-top:56.25%;
+      background:linear-gradient(135deg,var(--sky),var(--sage));
+    }
+    .media iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+    .exercise-body{padding:16px}
+    .exercise-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .exercise-title h3{margin:0;font-size:21px;letter-spacing:-.4px}
+    .badge{
+      background:var(--mint);
+      color:var(--navy);
+      border-radius:999px;
+      padding:7px 10px;
+      font-weight:900;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .cue{
+      margin-top:11px;
+      border-left:4px solid var(--sage);
+      background:rgba(160,203,166,.16);
+      border-radius:0 12px 12px 0;
+      padding:10px 12px;
+      font-size:14px;
+    }
+    .sets{display:grid;gap:9px;margin-top:15px}
+    .set-row{
+      display:grid;
+      grid-template-columns:34px 1fr 1fr;
+      gap:8px;
+      align-items:center;
+    }
+    .set-row input[type="checkbox"]{
+      appearance:none;
+      width:26px;
+      height:26px;
+      padding:0;
+      border:2px solid var(--navy);
+      border-radius:8px;
+      display:grid;
+      place-content:center;
+      background:#fff;
+    }
+    .set-row input[type="checkbox"]:checked{background:var(--navy)}
+    .set-row input[type="checkbox"]:checked::after{
+      content:"✓";
+      color:var(--mint);
+      font-size:18px;
+      font-weight:900;
+    }
+    .btn{
+      border:0;
+      background:var(--navy);
+      color:var(--mint);
+      font-weight:800;
+      border-radius:13px;
+      padding:11px 13px;
+    }
+    .btn.alt{background:var(--sky);color:var(--navy)}
+    .timer{
+      font-size:54px;
+      font-weight:900;
+      text-align:center;
+      letter-spacing:-2px;
+      color:var(--navy);
+      margin:24px 0;
+    }
+    .row{display:flex;gap:10px}
+    .row>*{flex:1}
+    .meal{
+      padding:13px 0;
+      border-bottom:1px solid var(--line);
+    }
+    .meal:last-child{border-bottom:0}
+    .meal b{color:var(--navy)}
+    .tabs{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:20;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      background:rgba(255,255,255,.97);
+      border-top:1px solid var(--line);
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+      backdrop-filter:blur(14px);
+    }
+    .tabs button{
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      border-radius:12px;
+      padding:10px 6px;
+      font-weight:800;
+    }
+    .tabs button.active{background:var(--mint);color:var(--navy)}
+    .view{display:none}
+    .view.active{display:block}
+    .install-note{
+      background:var(--sky);
+      color:var(--navy);
+      border-radius:16px;
+      padding:12px 13px;
+      font-size:13px;
+      margin-top:13px;
+    }
+    @media (max-width:480px){
+      .brand{font-size:29px}
+      .exercise-title h3{font-size:19px}
+      .hero{border-radius:0 0 24px 24px}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="hero-row">
+        <div>
+          <div class="brand">CELADON</div>
+          <p>Strength. Tennis. Consistency.</p>
+        </div>
+        <div class="pill">180–185 lb</div>
+      </div>
+    </header>
+
+    <section id="workoutView" class="view active">
+      <div class="panel flat">
+        <label for="day">Today's workout</label>
+        <select id="day">
+          <option value="upper">Monday — Upper Body</option>
+          <option value="lower">Wednesday — Lower + Core</option>
+          <option value="full">Saturday — Full Body</option>
+        </select>
+        <div class="install-note">On iPhone: Safari → Share → Add to Home Screen.</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Workout progress</h2>
+            <div id="count" class="small">0 sets complete</div>
+          </div>
+          <button id="resetWorkout" class="btn alt" type="button">Reset</button>
+        </div>
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      </div>
+
+      <div id="exerciseList"></div>
+    </section>
+
+    <section id="timerView" class="view">
+      <div class="panel">
+        <h2>Rest timer</h2>
+        <div id="timer" class="timer">01:30</div>
+        <div class="row">
+          <button id="timerStart" class="btn" type="button">Start</button>
+          <button id="timerReset" class="btn alt" type="button">Reset</button>
+        </div>
+        <label for="timerLength" style="margin-top:14px">Rest length</label>
+        <select id="timerLength">
+          <option value="60">1:00 — accessory work</option>
+          <option value="90" selected>1:30 — standard</option>
+          <option value="120">2:00 — compound lift</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="mealsView" class="view">
+      <div class="panel">
+        <h2>12–8 PM eating window</h2>
+        <div class="meal"><b>12:00 PM · First meal</b><div class="small">45–55 g protein</div><p>Eggs, Greek yogurt, tofu or paneer, vegetables, fruit, and one controlled serving of toast or roti.</p></div>
+        <div class="meal"><b>3:30 PM · Protein snack</b><div class="small">25–35 g protein</div><p>Protein shake, cottage cheese, Greek yogurt, tofu, or roasted edamame.</p></div>
+        <div class="meal"><b>6:30–7:30 PM · Dinner</b><div class="small">50–60 g protein</div><p>Tofu or paneer, dal or beans, vegetables, and a modest rice or roti serving.</p></div>
+      </div>
+      <div class="panel">
+        <h2>Daily target</h2>
+        <p><strong>150–170 g protein</strong>, consistent hydration, and two planned dessert servings per week.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="App navigation">
+    <button class="active" data-view="workoutView">Workout</button>
+    <button data-view="timerView">Timer</button>
+    <button data-view="mealsView">Meals</button>
+  </nav>
+
+  <script>
+    const plans = {
+      upper: [
+        {name:"Incline Dumbbell Press",sets:4,reps:"8–10",cue:"Shoulder blades back; keep your ribs down and avoid over-arching.",video:"8iPEnn-ltC8"},
+        {name:"Chest-Supported Row",sets:3,reps:"8–10",cue:"Keep your chest planted and pull your elbows toward your hips.",video:"LuWGKt8B_7o"},
+        {name:"Neutral-Grip Pulldown",sets:3,reps:"10",cue:"Keep your ribs down and pull toward the top of your chest.",video:"4P3-TXbH4tw"},
+        {name:"Machine Shoulder Press",sets:2,reps:"10",cue:"Use the back support and stop before your shoulders shrug.",video:"SVNPNizwiGw"},
+        {name:"Lateral Raise",sets:3,reps:"12–15",cue:"Use light weight and lead with your elbows.",video:"3VcKaXpzqRo"},
+        {name:"Dumbbell Curl",sets:2,reps:"12",cue:"Keep your elbows still and lower the weight slowly.",video:"ykJmrZ5v0Oo"}
+      ],
+      lower: [
+        {name:"Leg Press",sets:3,reps:"10",cue:"Keep your lower back supported and do not let your hips roll up.",video:"IZxyjW7MPJQ"},
+        {name:"Supported Split Squat",sets:3,reps:"8 each",cue:"Hold a support, stay tall, and control the descent.",video:"2C-uNgKwPLE"},
+        {name:"Seated Hamstring Curl",sets:3,reps:"12",cue:"Keep your hips down and pause briefly at the bottom.",video:"O7ScSob1c-A"},
+        {name:"Leg Extension",sets:2,reps:"12",cue:"Lift smoothly and avoid snapping your knees into lockout.",video:"YyvSfVjQeL0"},
+        {name:"Pallof Press",sets:3,reps:"10 each",cue:"Brace hard and do not let your torso rotate.",video:"f3R99GoYvCs"},
+        {name:"Dead Bug",sets:3,reps:"8 each",cue:"Keep your lower back gently pressed into the floor.",video:"g_BYB0R-4Ws"}
+      ],
+      full: [
+        {name:"Goblet Squat to Bench",sets:3,reps:"10",cue:"Sit back to the bench and keep the dumbbell close to your chest.",video:"MeIiIdhvXT4"},
+        {name:"Incline Dumbbell Press",sets:3,reps:"10",cue:"Feet planted, shoulder blades set, and back supported.",video:"8iPEnn-ltC8"},
+        {name:"Chest-Supported Row",sets:3,reps:"10",cue:"Keep your chest on the pad and avoid shrugging.",video:"LuWGKt8B_7o"},
+        {name:"Step-Up",sets:2,reps:"8 each",cue:"Use a low box and control the lowering phase.",video:"dQqApCGd5Ss"},
+        {name:"Lateral Raise",sets:3,reps:"15",cue:"Raise only to shoulder height with light weight.",video:"3VcKaXpzqRo"},
+        {name:"Pallof Press",sets:3,reps:"10 each",cue:"Brace and resist twisting.",video:"f3R99GoYvCs"}
+      ]
+    };
+
+    const day = document.getElementById("day");
+    const list = document.getElementById("exerciseList");
+
+    function storageKey(i,j){ return `celadon-${day.value}-${i}-${j}`; }
+    function loadSet(i,j){
+      try { return JSON.parse(localStorage.getItem(storageKey(i,j)) || "{}"); }
+      catch { return {}; }
+    }
+    function embedUrl(id){
+      return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&playsinline=1&rel=0`;
+    }
+
+    function renderWorkout(){
+      list.innerHTML = "";
+      plans[day.value].forEach((exercise,i) => {
+        let setRows = "";
+        for(let j=0;j<exercise.sets;j++){
+          const saved = loadSet(i,j);
+          setRows += `
+            <div class="set-row">
+              <input type="checkbox" data-i="${i}" data-j="${j}" ${saved.done ? "checked" : ""} aria-label="Complete set ${j+1}">
+              <input type="number" step="2.5" placeholder="Weight" value="${saved.weight || ""}" aria-label="Weight for set ${j+1}">
+              <input type="text" placeholder="Reps: ${exercise.reps}" value="${saved.reps || ""}" aria-label="Reps for set ${j+1}">
+            </div>`;
+        }
+
+        const article = document.createElement("article");
+        article.className = "exercise-card";
+        article.innerHTML = `
+          <div class="media">
+            <iframe
+              src="${embedUrl(exercise.video)}"
+              title="${exercise.name} demonstration"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture">
+            </iframe>
+          </div>
+          <div class="exercise-body">
+            <div class="exercise-title">
+              <h3>${exercise.name}</h3>
+              <span class="badge">${exercise.sets} × ${exercise.reps}</span>
+            </div>
+            <div class="cue"><strong>Coach cue:</strong> ${exercise.cue}</div>
+            <div class="sets">${setRows}</div>
+          </div>`;
+        list.appendChild(article);
+      });
+
+      list.querySelectorAll(".set-row").forEach(row => {
+        row.querySelectorAll("input").forEach(input => {
+          input.addEventListener("change", () => {
+            const box = row.children[0];
+            localStorage.setItem(storageKey(box.dataset.i, box.dataset.j), JSON.stringify({
+              done: box.checked,
+              weight: row.children[1].value,
+              reps: row.children[2].value
+            }));
+            updateProgress();
+          });
+        });
+      });
+      updateProgress();
+    }
+
+    function updateProgress(){
+      const boxes = [...list.querySelectorAll('input[type="checkbox"]')];
+      const done = boxes.filter(box => box.checked).length;
+      document.getElementById("count").textContent = `${done} of ${boxes.length} sets complete`;
+      document.getElementById("progressBar").style.width = boxes.length ? `${done / boxes.length * 100}%` : "0%";
+    }
+
+    day.addEventListener("change", renderWorkout);
+    document.getElementById("resetWorkout").addEventListener("click", () => {
+      Object.keys(localStorage)
+        .filter(key => key.startsWith(`celadon-${day.value}-`))
+        .forEach(key => localStorage.removeItem(key));
+      renderWorkout();
+    });
+
+    document.querySelectorAll(".tabs button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+        document.querySelectorAll(".tabs button").forEach(btn => btn.classList.remove("active"));
+        document.getElementById(button.dataset.view).classList.add("active");
+        button.classList.add("active");
+      });
+    });
+
+    let seconds = 90;
+    let interval = null;
+    const timer = document.getElementById("timer");
+    const timerStart = document.getElementById("timerStart");
+    const timerLength = document.getElementById("timerLength");
+
+    function drawTimer(){
+      timer.textContent = `${String(Math.floor(seconds/60)).padStart(2,"0")}:${String(seconds%60).padStart(2,"0")}`;
+    }
+    function resetTimer(){
+      clearInterval(interval);
+      interval = null;
+      seconds = Number(timerLength.value);
+      timerStart.textContent = "Start";
+      drawTimer();
+    }
+    timerStart.addEventListener("click", () => {
+      if(interval){
+        clearInterval(interval);
+        interval = null;
+        timerStart.textContent = "Resume";
+        return;
+      }
+      if(seconds <= 0) seconds = Number(timerLength.value);
+      timerStart.textContent = "Pause";
+      interval = setInterval(() => {
+        seconds -= 1;
+        drawTimer();
+        if(seconds <= 0){
+          clearInterval(interval);
+          interval = null;
+          timerStart.textContent = "Restart";
+        }
+      }, 1000);
+    });
+    document.getElementById("timerReset").addEventListener("click", resetTimer);
+    timerLength.addEventListener("change", resetTimer);
+
+    if("serviceWorker" in navigator){
+      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+    }
+
+    drawTimer();
+    renderWorkout();
+  </script>
+</body>
+</html>

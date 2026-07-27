@@ -1,0 +1,16 @@
+{
+  "name": "Celadon Fitness",
+  "short_name": "Celadon",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F7F8F4",
+  "theme_color": "#003F91",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
